@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тёмный Тест</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="quiz-container">
+        <!-- Шапка -->
+        <header class="quiz-header">
+            <h1>Интерактивный Тест</h1>
+            <p>Проверь свои знания</p>
+        </header>
+
+        <!-- Экран с вопросами (показывается по умолчанию) -->
+        <div id="quiz-screen">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+
+            <div class="question-box">
+                <span class="question-number" id="question-number">Вопрос 1 из 3</span>
+                <h2 id="question-text">Загрузка вопроса...</h2>
+            </div>
+
+            <div class="options-container" id="options-container">
+                <!-- Варианты ответов генерируются через JS -->
+            </div>
+
+            <div class="controls">
+                <button id="next-btn" class="btn" disabled>Ответить</button>
+            </div>
+        </div>
+
+        <!-- Экран результатов (скрыт по умолчанию) -->
+        <div id="result-screen" class="hidden">
+            <h2>Тест завершён!</h2>
+            <div class="score-box">
+                Ваш результат: <span id="score-text">0</span> из <span id="total-text">0</span>
+            </div>
+            <p id="result-message" class="result-message"></p>
+            <button id="restart-btn" class="btn">Пройти снова</button>
+        </div>
+    </div>
+
+    <script>
+        // Данные теста
+        const quizData = [
+            {
+                question: "Какое ключевое слово используется для объявления переменной в JavaScript, которую нельзя переопределить?",
+                options: ["var", "let", "const", "static"],
+                correct: 2
+            },
+            {
+                question: "С помощью какого свойства в CSS можно задать задний фон элемента?",
+                options: ["color", "background", "border", "font-style"],
+                correct: 1
+            },
+            {
+                question: "Что означает тег <div> в HTML?",
+                options: ["Ссылка", "Блочный контейнер", "Заголовок", "Изображение"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        // Элементы DOM
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreText = document.getElementById('score-text');
+        const totalText = document.getElementById('total-text');
+        const resultMessage = document.getElementById('result-message');
+        const restartBtn = document.getElementById('restart-btn');
+
+        function loadQuestion() {
+            selectedOption = null;
+            nextBtn.disabled = true;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? "Завершить" : "Следующий вопрос";
+
+            const data = quizData[currentQuestion];
+            questionNumber.textContent = `Вопрос ${currentQuestion + 1} из ${quizData.length}`;
+            questionText.textContent = data.question;
+
+            // Обновляем прогресс-бар
+            const progress = ((currentQuestion) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Очищаем предыдущие варианты
+            optionsContainer.innerHTML = '';
+
+            // Создаем новые варианты
+            data.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.classList.add('option-btn');
+                btn.textContent = option;
+                btn.addEventListener('click', () => selectOption(index, btn));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index, btn) {
+            // Снимаем выделение со всех кнопок
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.classList.remove('selected'));
+
+            // Выделяем выбранную
+            btn.classList.add('selected');
+            selectedOption = index;
+            nextBtn.disabled = false;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (selectedOption === null) return;
+
+            if (selectedOption === quizData[currentQuestion].correct) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            progressBar.style.width = '100%';
+
+            scoreText.textContent = score;
+            totalText.textContent = quizData.length;
+
+            const percentage = (score / quizData.length) * 100;
+            if (percentage === 100) {
+                resultMessage.textContent = "Превосходно! Отличный результат!";
+            } else if (percentage >= 50) {
+                resultMessage.textContent = "Хороший результат, но есть куда стремиться!";
+            } else {
+                resultMessage.textContent = "Стоит попробовать еще раз!";
+            }
+        }
+
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            score = 0;
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        });
+
+        // Старт теста при загрузке
+        loadQuestion();
+    </script>
+</body>
+</html>

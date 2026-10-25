@@ -1,0 +1,197 @@
+/* Общие сбросы и переменные */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --bg-color: #0f0506;
+    --card-bg: #1a0a0c;
+    --primary-red: #8b0000;
+    --bright-red: #d32f2f;
+    --hover-red: #b71c1c;
+    --text-color: #f5f5f5;
+    --text-muted: #b3a2a3;
+    --border-color: #3a1417;
+    --glow-color: rgba(211, 47, 47, 0.3);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Контейнер теста */
+.quiz-container {
+    background-color: var(--card-bg);
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--glow-color);
+    padding: 30px;
+    overflow: hidden;
+}
+
+/* Шапка */
+.quiz-header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.quiz-header h1 {
+    color: var(--bright-red);
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.quiz-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Прогресс-бар */
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background-color: #2a1012;
+    border-radius: 3px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary-red), var(--bright-red));
+    transition: width 0.3s ease;
+}
+
+/* Вопрос */
+.question-box {
+    margin-bottom: 25px;
+}
+
+.question-number {
+    color: var(--bright-red);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.question-box h2 {
+    font-size: 20px;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* Варианты ответов */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.option-btn {
+    background-color: #240d0f;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+    background-color: #331215;
+    border-color: var(--bright-red);
+    transform: translateY(-2px);
+}
+
+.option-btn.selected {
+    background-color: var(--primary-red);
+    border-color: var(--bright-red);
+    box-shadow: 0 0 12px var(--glow-color);
+    font-weight: 600;
+}
+
+/* Кнопка действия */
+.controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    background-color: var(--bright-red);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+}
+
+.btn:hover:not(:disabled) {
+    background-color: var(--hover-red);
+    box-shadow: 0 4px 16px rgba(211, 47, 47, 0.6);
+}
+
+.btn:disabled {
+    background-color: #4a1c1e;
+    color: #885e60;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Экран результатов */
+#result-screen {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#result-screen h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: var(--bright-red);
+}
+
+.score-box {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.score-box span {
+    color: var(--bright-red);
+    font-weight: bold;
+}
+
+.result-message {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* Утилиты */
+.hidden {
+    display: none;
+}
